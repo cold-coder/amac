@@ -1,0 +1,11 @@
+{
+  "name": "amac",
+  "version": "1.0.0",
+  "description": "a web crawler to collect amac data",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Yao Cheng",
+  "license": "ISC"
+}
