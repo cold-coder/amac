@@ -6,8 +6,9 @@ const fs = require('fs')
 const listUrl = 'http://gs.amac.org.cn/amac-infodisc/api/pof/manager'
 const detailUrl = 'http://gs.amac.org.cn/amac-infodisc/res/pof/manager/'
 const condition = {
-  "registerProvince": "河南",
-  "registerCity": "郑州市"
+  "registerProvince": "广东",
+  "registerCity": "深圳市",
+  "primaryInvestType": "私募证券投资基金管理人"
 }
 const PAGESIZE = 20
 
@@ -55,7 +56,6 @@ axios.post(`${listUrl}?page=1&size=${PAGESIZE}&rand=${Math.random()}`, condition
 function analysePage(url) {
   return axios.get(`${detailUrl}${url}`).then(res => {
     if (res.status === 200) {
-      // return parseByRegExp(res.data)
       const result = parseByCheerio(res.data)
       // console.log(result)
       return result
@@ -80,16 +80,4 @@ function parseByCheerio(txt) {
   const type = $('.table-info:first-of-type tr:nth-child(12) td:nth-child(2)').text().replace(/(\r\n|\n|\r)/gm, '').replace(/ /gm, '')
   const website = $('.table-info:first-of-type tr:nth-child(15) td:nth-child(2)').text().replace(/(\r\n|\n|\r)/gm, '').replace(/ /gm, '')
   return { fullName, address, foundDate, type, website}
-}
-
-function parseByRegExp(txt) {
-  var plainTxt = txt.replace(/(\r\n|\n|\r)/gm, '').replace(/ /gm, '')
-  const regexpFullname = /complaint2">(.+) &nbsp/g
-  const regexpAddress = /<tdclass="td-title">办公地址:<\/td><tdclass="td-content"colspan="3">(.+)<\/td><\/tr>/g
-  const fullnameMatch = regexpFullname.exec(plainTxt)
-  const addressMatch = regexpAddress.exec(plainTxt)
-  // console.log(txt)
-  const fullName = fullnameMatch[1].trim()
-  const address = addressMatch[1].trim()
-  return {fullName, address}
 }
